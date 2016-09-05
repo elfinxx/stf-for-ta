@@ -605,6 +605,8 @@ module.exports = function DeviceScreenDirective(
               )
 
           control.touchDown(nextSeq(), 0, scaled.xP, scaled.yP, pressure)
+          console.log(scaled.xP)
+          console.log(scaled.yP)
 
           if (fakePinch) {
             control.touchDown(nextSeq(), 1, 1 - scaled.xP, 1 - scaled.yP,
@@ -775,6 +777,7 @@ module.exports = function DeviceScreenDirective(
         function startMousing() {
           control.gestureStart(nextSeq())
           input[0].focus()
+          console.log("move")
         }
 
         function stopMousing() {

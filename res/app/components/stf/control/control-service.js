@@ -225,6 +225,13 @@ module.exports = function ControlServiceFactory(
       return sendTwoWay('screen.capture')
     }
 
+    this.dumpWindowsHierarchy = function(command) {
+      return sendTwoWay('shell.command', {
+        command: 'uiautomator dump'
+        , timeout: 10000
+      })
+    }
+
     this.fsretrieve = function(file) {
       return sendTwoWay('fs.retrieve', {
         file: file

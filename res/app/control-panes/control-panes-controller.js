@@ -11,6 +11,12 @@ module.exports =
         filters: ['native', 'web']
       },
       {
+        title: gettext('Dump Window'),
+        icon: 'fa-code color-skyblue',
+        templateUrl: 'control-panes/xmldump/xmldump.pug',
+        filters: ['native', 'web']
+      },
+      {
         title: gettext('Automation'),
         icon: 'fa-road color-lila',
         templateUrl: 'control-panes/automation/automation.pug',

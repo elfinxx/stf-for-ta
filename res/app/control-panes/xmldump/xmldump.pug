@@ -1,0 +1,28 @@
+.widget-container.fluid-height(ng-controller='XMLDumpCtrl').stf-shell
+  .heading
+    button.btn.btn-sm.btn-primary-outline(ng-click='dumpWindowsHierarchy()',
+    title='{{"Dump Windows Hierarchy"}}')
+      i.fa.fa-file-code
+      span(translate) Dump
+    //button.btn.btn-sm.btn-info-outline(ng-click='takePageShot()',
+      title='{{"Take Pageshot (Needs WebView running)"|translate}}',
+      ng-if='$root.platform == "web" && $root.browser == "webview"')
+      i.fa.fa-file-code-o(translate)
+      span(translate) Pageshot
+
+  .widget-content.padded
+    pre.shell-results.selectable(ng-show='data') {{data}}
+    pre.shell-results.selectable.shell-results-empty(ng-show='result.settled && !data') No output
+
+    nothing-to-show(message='{{"No dump"|translate}}', icon='fa-file-code-o', ng-show='!data')
+
+    ul.screenshots-icon-view.clear-fix.selectable
+      li.screenshots-icon-item(ng-repeat='shot in screenshots').cursor-select
+        h5 {{ device.name }}
+        h6 {{ shot.body.date | date:'HH:mm:ss' }}
+        a(ng-href='{{ shot.body.href }}', target='_blank')
+          img(ng-src='{{ shot.body.href + shotSizeParameter(480, 1) }}',
+          ng-srcset='{{ shot.body.href + shotSizeParameter(480, 2) }} 2x').screenshot-image
+
+    //.clearfix
+
