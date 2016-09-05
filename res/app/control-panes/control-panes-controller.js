@@ -11,8 +11,8 @@ module.exports =
         filters: ['native', 'web']
       },
       {
-        title: gettext('XmlDump'),
-        icon: 'fa-camera color-skyblue',
+        title: gettext('Dump Window'),
+        icon: 'fa-code color-skyblue',
         templateUrl: 'control-panes/xmldump/xmldump.pug',
         filters: ['native', 'web']
       },

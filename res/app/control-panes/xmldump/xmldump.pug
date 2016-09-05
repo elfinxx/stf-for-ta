@@ -1,38 +1,20 @@
-.widget-container.fluid-height(ng-controller='XMLDumpCtrl').stf-screenshots
+.widget-container.fluid-height(ng-controller='XMLDumpCtrl').stf-shell
   .heading
-    button.btn.btn-sm.btn-primary-outline(ng-click='takeScreenShot()',
-    title='{{"Take Screenshotss"|translate}}')
-      i.fa.fa-camera
-      span(translate) Screenshot
+    button.btn.btn-sm.btn-primary-outline(ng-click='dumpWindowsHierarchy()',
+    title='{{"Dump Windows Hierarchy"}}')
+      i.fa.fa-file-code
+      span(translate) Dump
     //button.btn.btn-sm.btn-info-outline(ng-click='takePageShot()',
       title='{{"Take Pageshot (Needs WebView running)"|translate}}',
       ng-if='$root.platform == "web" && $root.browser == "webview"')
-      i.fa.fa-camera-retro(translate)
+      i.fa.fa-file-code-o(translate)
       span(translate) Pageshot
 
-    .button-spacer
-
-    clear-button(ng-click='clear()', ng-disabled='!screenshots.length')
-
-    .button-spacer
-
-    .pull-right
-      button.btn.btn-primary-outline.btn-sm.transparent-border(
-        ng-click='zoom({min: 80, step: -50})',
-        ng-disabled='!screenshots.length')
-        i.fa.fa-minus
-
-      input(type='range', ng-model='screenShotSize', min='80', max='480', step='10',
-      ng-model-options='{ updateOn: "default blur", debounce: { default: 100, blur: 0} }',
-      ng-disabled='!screenshots.length').zoom-range
-
-      button.btn.btn-primary-outline.btn-sm.transparent-border(
-        ng-click='zoom({max: 480, step: 50})',
-        ng-disabled='!screenshots.length')
-        i.fa.fa-plus
-
   .widget-content.padded
-    nothing-to-show(message='{{"No screenshots taken"|translate}}', icon='fa-camera', ng-show='!screenshots.length')
+    pre.shell-results.selectable(ng-show='data') {{data}}
+    pre.shell-results.selectable.shell-results-empty(ng-show='result.settled && !data') No output
+
+    nothing-to-show(message='{{"No dump"|translate}}', icon='fa-file-code-o', ng-show='!data')
 
     ul.screenshots-icon-view.clear-fix.selectable
       li.screenshots-icon-item(ng-repeat='shot in screenshots').cursor-select
@@ -42,4 +24,5 @@
           img(ng-src='{{ shot.body.href + shotSizeParameter(480, 1) }}',
           ng-srcset='{{ shot.body.href + shotSizeParameter(480, 2) }} 2x').screenshot-image
 
-    .clearfix
+    //.clearfix
+
