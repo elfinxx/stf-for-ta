@@ -1,0 +1,35 @@
+.widget-container.fluid-height(ng-controller='UserActionsCtrl')
+  .heading
+    button.btn.btn-sm.btn-primary-outline(ng-click='addRow()',
+    title='{{"Refresh"}}')
+      i.fa.fa-refresh
+      span(translate) refresh
+
+  .widget-content.padded
+    table.table.table-condensed.table-hover.table-infocard
+      tbody
+
+        tr
+          td(translate) Width
+          td {{device.display.width}} px
+        tr
+          td(translate) Height
+          td {{device.display.height}} px
+
+        tr
+          td(translate) Orientation
+          td {{device.display.rotation}}°
+
+
+    span(translate) Current Location
+    table.table.table-condensed.table-hover.table-infocard
+      tbody
+        tr(ng-repeat='touchPoint in touchPoints track by $index')
+          td(translate) X
+          td {{touchPoint.touchX}}
+          td(translate) Y
+          td {{touchPoint.touchY}}
+
+
+
+
