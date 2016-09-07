@@ -9,6 +9,7 @@ module.exports = function ControlServiceFactory(
 ) {
   var controlService = {
   }
+  var positions = ''
 
   function ControlService(target, channel) {
     function sendOneWay(action, data) {
@@ -60,6 +61,21 @@ module.exports = function ControlServiceFactory(
       , pressure: pressure
       })
     }
+
+
+    this.putLocation_withTouch = function(x, y) {
+
+      // positions = positions.concat(x + "/" + y);
+      positions = x + "/" + y;
+      console.log("putLocation_withTouch" + positions)
+
+    }
+
+    this.getLocation_withTouch = function() {
+      console.log("getLocation_withTouch" + positions)
+      return positions
+    }
+
 
     this.touchMove = function(seq, contact, x, y, pressure) {
       sendOneWay('input.touchMove', {

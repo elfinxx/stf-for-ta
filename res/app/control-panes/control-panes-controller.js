@@ -17,6 +17,12 @@ module.exports =
         filters: ['native', 'web']
       },
       {
+        title: gettext('User Actions'),
+        icon: 'fa-eye color-skyblue',
+        templateUrl: 'control-panes/userActions/userActions.pug',
+        filters: ['native', 'web']
+      },
+      {
         title: gettext('Automation'),
         icon: 'fa-road color-lila',
         templateUrl: 'control-panes/automation/automation.pug',

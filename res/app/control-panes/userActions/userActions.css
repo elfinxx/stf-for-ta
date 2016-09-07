@@ -1,0 +1,21 @@
+
+.stf-userActions .table.table-infocard thead > tr > th,
+.stf-userActions .table.table-infocard tbody > tr > th,
+.stf-userActions .table.table-infocard tfoot > tr > th,
+.stf-userActions .table.table-infocard thead > tr > td,
+.stf-userActions .table.table-infocard tbody > tr > td,
+.stf-userActions .table.table-infocard tfoot > tr > td {
+  border-top: 0;
+}
+
+.stf-userActions .table-infocard tbody > tr > td:first-child {
+  text-align: right;
+  margin-right: 20px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.stf-userActions .progress {
+  margin-bottom: 0;
+  height: 15px;
+}

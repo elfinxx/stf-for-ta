@@ -534,6 +534,7 @@ module.exports = function DeviceScreenDirective(
             slots.push(i)
             fingers.unshift(finger)
           }
+
         }
 
         function activateFinger(index, x, y, pressure) {
@@ -605,8 +606,9 @@ module.exports = function DeviceScreenDirective(
               )
 
           control.touchDown(nextSeq(), 0, scaled.xP, scaled.yP, pressure)
-          console.log(scaled.xP)
-          console.log(scaled.yP)
+          var userAction = "touch";
+          var position  =  scaled.xP + "/" + scaled.yP;
+          control.putLocation_withTouch(scaled.xP, scaled.yP)
 
           if (fakePinch) {
             control.touchDown(nextSeq(), 1, 1 - scaled.xP, 1 - scaled.yP,
