@@ -38,6 +38,11 @@ module.exports = function DeviceScreenDirective(
         }
       }
 
+      var deviceDisplayWidth = device.display.width
+      var deviceDisplayHeight = device.display.height
+      console.log("device.display.width" + deviceDisplayWidth)
+      console.log("device.display.height" + deviceDisplayHeight)
+
       var scaler = ScalingService.coordinator(
         device.display.width
       , device.display.height
@@ -606,9 +611,12 @@ module.exports = function DeviceScreenDirective(
               )
 
           control.touchDown(nextSeq(), 0, scaled.xP, scaled.yP, pressure)
-          var userAction = "touch";
-          var position  =  scaled.xP + "/" + scaled.yP;
-          control.putLocation_withTouch(scaled.xP, scaled.yP)
+          var gesture = "touch";
+
+          var calX = Math.round(deviceDisplayWidth * scaled.xP)
+          var calY = Math.round(deviceDisplayHeight * scaled.yP)
+
+          control.putLocation_withTouch(gesture, calX, calY)
 
           if (fakePinch) {
             control.touchDown(nextSeq(), 1, 1 - scaled.xP, 1 - scaled.yP,

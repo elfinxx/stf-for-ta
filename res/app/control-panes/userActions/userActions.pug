@@ -23,12 +23,19 @@
 
     span(translate) Current Location
     table.table.table-condensed.table-hover.table-infocard
+      thead
+        tr
+          th
+            span(translate) gesture
+          th
+            span(translate) X좌표
+          th
+            span(translate) Y좌표
       tbody
         tr(ng-repeat='touchPoint in touchPoints track by $index')
-          td(translate) X
-          td {{touchPoint.touchX}}
-          td(translate) Y
-          td {{touchPoint.touchY}}
+          td {{touchPoint.gesture}}
+          td {{touchPoint.locationX}}
+          td {{touchPoint.locationY}}
 
 
 

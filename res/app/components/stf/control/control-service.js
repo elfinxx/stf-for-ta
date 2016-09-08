@@ -10,6 +10,7 @@ module.exports = function ControlServiceFactory(
   var controlService = {
   }
   var positions = ''
+  var userActions = [];
 
   function ControlService(target, channel) {
     function sendOneWay(action, data) {
@@ -63,17 +64,30 @@ module.exports = function ControlServiceFactory(
     }
 
 
-    this.putLocation_withTouch = function(x, y) {
+    this.putLocation_withTouch = function(gesture, x, y) {
 
-      // positions = positions.concat(x + "/" + y);
-      positions = x + "/" + y;
-      console.log("putLocation_withTouch" + positions)
+      var userAction = {
+        gesture : ''
+        , locationX : ''
+        , locationY : ''
+      }
+
+      userAction.gesture = gesture
+      userAction.locationX = x
+      userAction.locationY = y
+
+      console.log("putLocation_withTouch");
+      console.log("userAction.gesture" + userAction.gesture);
+      console.log("userAction.locationX" + userAction.locationX);
+      console.log("userAction.locationY" + userAction.locationY);
+
+      userActions.push(userAction)
 
     }
 
     this.getLocation_withTouch = function() {
       console.log("getLocation_withTouch" + positions)
-      return positions
+      return userActions
     }
 
 

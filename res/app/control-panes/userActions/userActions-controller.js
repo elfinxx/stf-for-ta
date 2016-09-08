@@ -4,22 +4,18 @@ module.exports = function UserActionsCtrl($scope) {
   // $scope.injectUserAction.invoke();
 
   $scope.touchPoints = [];
+  $scope.touchPoints=  $scope.control.getLocation_withTouch();
 
-  // $scope.$watch('injectUserAction', function (position) {
+  // $scope.$watch('userAction', function ($scope.userAction) {
   //   /*Checking if the given value is not undefined*/
   //   console.log("value: " + position)
   //   if(position){
   //     xy = position;
   //     console.log("scope.scaledXY : " + xy )
   //     /*Injecting the Method*/
-  //     $scope.scaledXY.invoke = function(){
-  //       console.log("invoke ok = " + position)
-  //       // scope.scaledXY = position
-  //     }
+  //
   //   }
   // });
-
-
 
 
   // console.log("touchXY: " + $scope.touchPoints.join());
@@ -31,33 +27,12 @@ module.exports = function UserActionsCtrl($scope) {
 
   $scope.addRow = function() {
 
-    var touchPoint = { touchX: '', touchY: ''};
-
-    console.log($scope.device.display.width)
-    console.log($scope.device.display.height)
-
-    var scaledXY =  $scope.control.getLocation_withTouch();
-    var res = scaledXY.split("/")
-    console.log(res[0])
-    console.log(res[1])
-
-
-    var calX = Math.round($scope.device.display.width * res[0])
-    var calY = Math.round($scope.device.display.height * res[1])
-
-    console.log(calX)
-    console.log(calY)
-    touchPoint.touchX = calX
-    touchPoint.touchY = calY
-
-    console.log("==addRow==")
-
-    // push a new object with some defaults
-    $scope.touchPoints.push(touchPoint)
+    $scope.touchPoints=  $scope.control.getLocation_withTouch();
 
     for(var i = 0; i < $scope.touchPoints.length; i++){
-      console.log(i + " = " + "touchX: " + $scope.touchPoints[i].touchX)
-      console.log(i + " = " + "touchY: " + $scope.touchPoints[i].touchY)
+      console.log(i + " = " + "gesture: " + $scope.touchPoints[i].gesture)
+      console.log(i + " = " + "touchX: " + $scope.touchPoints[i].locationX)
+      console.log(i + " = " + "touchY: " + $scope.touchPoints[i].locationY)
     }
   }
 
