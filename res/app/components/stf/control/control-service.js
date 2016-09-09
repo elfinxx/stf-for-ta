@@ -70,19 +70,35 @@ module.exports = function ControlServiceFactory(
         gesture : ''
         , locationX : ''
         , locationY : ''
+        , nextScreenshot : ''
       }
+
+
+      // setTimeout(this.screenshot().then(function(result) {
+      //   $rootScope.$apply(function() {
+      //     userAction.nextScreenshot = result;
+      //   })
+      // }), 10000)
+
+      this.screenshot().then(function(result) {
+        $rootScope.$apply(function() {
+          userAction.nextScreenshot = result;
+        })
+      })
 
       userAction.gesture = gesture
       userAction.locationX = x
       userAction.locationY = y
 
+
       console.log("putLocation_withTouch");
       console.log("userAction.gesture" + userAction.gesture);
       console.log("userAction.locationX" + userAction.locationX);
       console.log("userAction.locationY" + userAction.locationY);
+      console.log("userAction.nextScreenshot" + userAction.nextScreenshot);
+
 
       userActions.push(userAction)
-
     }
 
     this.getLocation_withTouch = function() {

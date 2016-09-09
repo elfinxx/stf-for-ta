@@ -1,4 +1,5 @@
 module.exports = function UserActionsCtrl($scope) {
+  $scope.screenShotSize = 10
 
   // $scope.injectUserAction = {};
   // $scope.injectUserAction.invoke();
@@ -33,10 +34,17 @@ module.exports = function UserActionsCtrl($scope) {
       console.log(i + " = " + "gesture: " + $scope.touchPoints[i].gesture)
       console.log(i + " = " + "touchX: " + $scope.touchPoints[i].locationX)
       console.log(i + " = " + "touchY: " + $scope.touchPoints[i].locationY)
+      console.log(i + " = " + "screenshot: " + $scope.touchPoints[i].nextScreenshot)
     }
   }
 
+  $scope.shotSizeParameter = function(maxSize, multiplier) {
+    var finalSize = $scope.screenShotSize * multiplier
+    var finalMaxSize = maxSize * multiplier
 
+    return (finalSize === finalMaxSize) ? '' :
+    '?crop=' + finalSize + 'x'
+  }
 
   var getSdStatus = function() {
     if ($scope.control) {

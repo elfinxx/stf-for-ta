@@ -40,6 +40,10 @@ module.exports = function DeviceScreenDirective(
 
       var deviceDisplayWidth = device.display.width
       var deviceDisplayHeight = device.display.height
+      var _scaledX;
+      var _scaledY;
+      var _gesture;
+
       console.log("device.display.width" + deviceDisplayWidth)
       console.log("device.display.height" + deviceDisplayHeight)
 
@@ -582,6 +586,7 @@ module.exports = function DeviceScreenDirective(
         }
 
         function mouseDownListener(event) {
+          console.log("mouseDownListener");
           var e = event
           if (e.originalEvent) {
             e = e.originalEvent
@@ -611,12 +616,6 @@ module.exports = function DeviceScreenDirective(
               )
 
           control.touchDown(nextSeq(), 0, scaled.xP, scaled.yP, pressure)
-          var gesture = "touch";
-
-          var calX = Math.round(deviceDisplayWidth * scaled.xP)
-          var calY = Math.round(deviceDisplayHeight * scaled.yP)
-
-          control.putLocation_withTouch(gesture, calX, calY)
 
           if (fakePinch) {
             control.touchDown(nextSeq(), 1, 1 - scaled.xP, 1 - scaled.yP,
@@ -645,6 +644,11 @@ module.exports = function DeviceScreenDirective(
           else {
             lastPossiblyBuggyMouseUpEvent = null
           }
+
+          _gesture = "touch";
+          _scaledX = Math.round(deviceDisplayWidth * scaled.xP)
+          _scaledY = Math.round(deviceDisplayHeight * scaled.yP)
+
         }
 
         function mouseMoveListener(event) {
@@ -701,6 +705,7 @@ module.exports = function DeviceScreenDirective(
         }
 
         function mouseUpListener(event) {
+          console.log("mouseUpListener");
           var e = event
           if (e.originalEvent) {
             e = e.originalEvent
@@ -727,6 +732,8 @@ module.exports = function DeviceScreenDirective(
           }
 
           stopMousing()
+          control.putLocation_withTouch(_gesture, _scaledX, _scaledY)
+          // setTimeout(control.putLocation_withTouch(_gesture, _scaledX, _scaledY), 10000)
         }
 
         /**
@@ -799,6 +806,7 @@ module.exports = function DeviceScreenDirective(
         }
 
         function touchStartListener(event) {
+          console.log("touchStartListener");
           var e = event
           e.preventDefault()
 
@@ -869,6 +877,7 @@ module.exports = function DeviceScreenDirective(
         }
 
         function touchMoveListener(event) {
+          console.log("touchMoveListener");
           var e = event
           e.preventDefault()
 
@@ -898,6 +907,7 @@ module.exports = function DeviceScreenDirective(
         }
 
         function touchEndListener(event) {
+          console.log("touchEndListener");
           var e = event
           if (e.originalEvent) {
             e = e.originalEvent
