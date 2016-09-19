@@ -23,13 +23,44 @@
 
     span(translate) Current Location
     table.table.table-condensed.table-hover.table-infocard
+      thead
+        tr
+          th
+            span(translate) gesture
+          th
+            span(translate) X좌표
+          th
+            span(translate) Y좌표
+          th
+            span(translate) class
+          th
+            span(translate) text
+          th
+            span(translate) id
+          th
+            span(translate) 이전 screenshot
+          th
+            span(translate) 이전 screenshot 시간
+          th
+            span(translate) 다음 screenshot
+          th
+            span(translate) 다음 screenshot 시간
+
       tbody
         tr(ng-repeat='touchPoint in touchPoints track by $index')
-          td(translate) X
-          td {{touchPoint.touchX}}
-          td(translate) Y
-          td {{touchPoint.touchY}}
-
-
-
-
+          td {{touchPoint.gesture}}
+          td {{touchPoint.locationX}}
+          td {{touchPoint.locationY}}
+          td {{touchPoint.uiElement.elementClass}}
+          td {{touchPoint.uiElement.text}}
+          td {{touchPoint.uiElement.resourceId}}
+          td
+            a(ng-href='{{ touchPoint.currentScreenshot.body.href }}', target='_blank')
+              img(ng-src='{{ touchPoint.currentScreenshot.body.href + shotSizeParameter(20, 1) }}',
+              ng-srcset='{{ touchPoint.currentScreenshot.body.href + shotSizeParameter(20, 2) }} 2x').screenshot-image
+          td {{touchPoint.currentScreenshot.body.date | date:'HH:mm:ss'}}
+          td
+            a(ng-show="touchPoints[$index + 1]" ng-href='{{ touchPoints[$index + 1].currentScreenshot.body.href }}', target='_blank')
+              img(ng-src='{{ touchPoints[$index + 1].currentScreenshot.body.href + shotSizeParameter(20, 1) }}',
+              ng-srcset='{{ touchPoints[$index + 1].currentScreenshot.body.href + shotSizeParameter(20, 2) }} 2x').screenshot-image
+          td(ng-show="touchPoints[$index + 1]") {{touchPoints[$index + 1].currentScreenshot.body.date | date:'HH:mm:ss' }}

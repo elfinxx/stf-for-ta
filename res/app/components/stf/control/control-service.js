@@ -3,6 +3,7 @@ module.exports = function ControlServiceFactory(
 , $http
 , socket
 , TransactionService
+, UiXmlAnalysisService
 , $rootScope
 , gettext
 , KeycodesMapped
@@ -10,6 +11,7 @@ module.exports = function ControlServiceFactory(
   var controlService = {
   }
   var positions = ''
+  var userActions = []
 
   function ControlService(target, channel) {
     function sendOneWay(action, data) {
@@ -61,19 +63,86 @@ module.exports = function ControlServiceFactory(
       , pressure: pressure
       })
     }
+    var xmlData = null
 
 
-    this.putLocation_withTouch = function(x, y) {
+    this.xmlDump = function(x, y) {
+      this.shell('uiautomator dump;cat /sdcard/window_dump.xml').then(function(result) {
+        $rootScope.$apply(function() {
+          xmlData = result.data.join('');
+          xmlData = xmlData.substring(xmlData.indexOf("\n") + 1);
+        })
+      })
+    }
 
-      // positions = positions.concat(x + "/" + y);
-      positions = x + "/" + y;
-      console.log("putLocation_withTouch" + positions)
+
+    this.putLocation_withTouch = function(gesture, x, y) {
+
+      var userAction = {
+        gesture : ''
+        , locationX : ''
+        , locationY : ''
+        , currentScreenshot : null
+        , currentXmlDump : null
+        , uiElement : {
+            text : ''
+          , resourceId : ''
+          , elementClass : ''
+          , bounds : ''
+        }
+      }
+
+      // this.shell('uiautomator dump;cat /sdcard/window_dump.xml')
+      //   .progressed(function(result) {
+      //     console.log("looking for xml dump.")
+      //   })
+      //   .then(function(result) {
+      //     // console.log("cat dump data");
+      //     // console.log(result.data.join(''));
+      //     var xmlData = result.data.join('');
+      //     xmlData = xmlData.substring(xmlData.indexOf("\n") + 1);
+      //     userAction.currentXmlDump = xmlData;
+      //
+      //
+      //     $rootScope.$digest()
+      //     // $scope.data = result.data.join('')
+      //     // $scope.$digest()
+      //
+      //     // console.log("putLocation_withTouch");
+      //     // console.log("userAction.gesture" + userAction.gesture);
+      //     // console.log("userAction.locationX" + userAction.locationX);
+      //     // console.log("userAction.locationY" + userAction.locationY);
+      //     // console.log("userAction.currentScreenshot" + userAction.currentScreenshot);
+      //     // console.log("userAction.currentXmlDump" + userAction.currentXmlDump);
+      //     userActions.push(userAction)
+      //
+      //     UiXmlAnalysisService.getElement(userAction.currentXmlDump, x, y);
+      //   })
+
+
+      this.screenshot().then(function(result) {
+        $rootScope.$apply(function() {
+          userAction.currentScreenshot = result;
+        })
+      })
+
+      userAction.gesture = gesture
+      userAction.locationX = x
+      userAction.locationY = y
+
+
+      if(xmlData != null){
+        userAction.currentXmlDump = xmlData
+        userAction.uiElement = UiXmlAnalysisService.getElement(xmlData, x, y)
+        userActions.push(userAction)
+        xmlData = null
+      }
 
     }
 
     this.getLocation_withTouch = function() {
       console.log("getLocation_withTouch" + positions)
-      return positions
+      return userActions
     }
 
 
@@ -241,11 +310,16 @@ module.exports = function ControlServiceFactory(
       return sendTwoWay('screen.capture')
     }
 
-    this.dumpWindowsHierarchy = function(command) {
-      return sendTwoWay('shell.command', {
-        command: 'uiautomator dump'
-        , timeout: 10000
-      })
+    // this.dumpWindowsHierarchy = function(command) {
+    //   return sendTwoWay('shell.command', {
+    //     command: 'uiautomator dump'
+    //     , timeout: 10000
+    //   })
+    // }
+
+    this.dumpWindowsHierarchy = function() {
+      // return sendTwoWay('uiautomator dump;cat /sdcard/window_dump.xml')
+      return sendTwoWay('cat /sdcard/window_dump.xml')
     }
 
     this.fsretrieve = function(file) {
