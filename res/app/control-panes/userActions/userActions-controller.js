@@ -28,14 +28,10 @@ module.exports = function UserActionsCtrl($scope) {
 
   $scope.addRow = function() {
 
-    $scope.touchPoints=  $scope.control.getLocation_withTouch();
-
-    for(var i = 0; i < $scope.touchPoints.length; i++){
-      console.log(i + " = " + "gesture: " + $scope.touchPoints[i].gesture)
-      console.log(i + " = " + "touchX: " + $scope.touchPoints[i].locationX)
-      console.log(i + " = " + "touchY: " + $scope.touchPoints[i].locationY)
-      console.log(i + " = " + "screenshot: " + $scope.touchPoints[i].nextScreenshot)
-    }
+    $scope.touchPoints =  $scope.control.getLocation_withTouch();
+    // for(var i = 0; i < $scope.touchPoints.length; i++){
+    //   console.log(i + " = " + "text: " + $scope.touchPoints[i].uiElement.text)
+    // }
   }
 
   $scope.shotSizeParameter = function(maxSize, multiplier) {
@@ -45,6 +41,8 @@ module.exports = function UserActionsCtrl($scope) {
     return (finalSize === finalMaxSize) ? '' :
     '?crop=' + finalSize + 'x'
   }
+
+
 
   var getSdStatus = function() {
     if ($scope.control) {

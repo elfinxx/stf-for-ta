@@ -3,6 +3,7 @@ module.exports = function ControlServiceFactory(
 , $http
 , socket
 , TransactionService
+, UiXmlAnalysisService
 , $rootScope
 , gettext
 , KeycodesMapped
@@ -10,7 +11,7 @@ module.exports = function ControlServiceFactory(
   var controlService = {
   }
   var positions = ''
-  var userActions = [];
+  var userActions = []
 
   function ControlService(target, channel) {
     function sendOneWay(action, data) {
@@ -62,6 +63,17 @@ module.exports = function ControlServiceFactory(
       , pressure: pressure
       })
     }
+    var xmlData = null
+
+
+    this.xmlDump = function(x, y) {
+      this.shell('uiautomator dump;cat /sdcard/window_dump.xml').then(function(result) {
+        $rootScope.$apply(function() {
+          xmlData = result.data.join('');
+          xmlData = xmlData.substring(xmlData.indexOf("\n") + 1);
+        })
+      })
+    }
 
 
     this.putLocation_withTouch = function(gesture, x, y) {
@@ -70,19 +82,47 @@ module.exports = function ControlServiceFactory(
         gesture : ''
         , locationX : ''
         , locationY : ''
-        , nextScreenshot : ''
+        , currentScreenshot : null
+        , currentXmlDump : null
+        , uiElement : {
+            text : ''
+          , resourceId : ''
+          , elementClass : ''
+          , bounds : ''
+        }
       }
 
-
-      // setTimeout(this.screenshot().then(function(result) {
-      //   $rootScope.$apply(function() {
-      //     userAction.nextScreenshot = result;
+      // this.shell('uiautomator dump;cat /sdcard/window_dump.xml')
+      //   .progressed(function(result) {
+      //     console.log("looking for xml dump.")
       //   })
-      // }), 10000)
+      //   .then(function(result) {
+      //     // console.log("cat dump data");
+      //     // console.log(result.data.join(''));
+      //     var xmlData = result.data.join('');
+      //     xmlData = xmlData.substring(xmlData.indexOf("\n") + 1);
+      //     userAction.currentXmlDump = xmlData;
+      //
+      //
+      //     $rootScope.$digest()
+      //     // $scope.data = result.data.join('')
+      //     // $scope.$digest()
+      //
+      //     // console.log("putLocation_withTouch");
+      //     // console.log("userAction.gesture" + userAction.gesture);
+      //     // console.log("userAction.locationX" + userAction.locationX);
+      //     // console.log("userAction.locationY" + userAction.locationY);
+      //     // console.log("userAction.currentScreenshot" + userAction.currentScreenshot);
+      //     // console.log("userAction.currentXmlDump" + userAction.currentXmlDump);
+      //     userActions.push(userAction)
+      //
+      //     UiXmlAnalysisService.getElement(userAction.currentXmlDump, x, y);
+      //   })
+
 
       this.screenshot().then(function(result) {
         $rootScope.$apply(function() {
-          userAction.nextScreenshot = result;
+          userAction.currentScreenshot = result;
         })
       })
 
@@ -91,14 +131,13 @@ module.exports = function ControlServiceFactory(
       userAction.locationY = y
 
 
-      console.log("putLocation_withTouch");
-      console.log("userAction.gesture" + userAction.gesture);
-      console.log("userAction.locationX" + userAction.locationX);
-      console.log("userAction.locationY" + userAction.locationY);
-      console.log("userAction.nextScreenshot" + userAction.nextScreenshot);
+      if(xmlData != null){
+        userAction.currentXmlDump = xmlData
+        userAction.uiElement = UiXmlAnalysisService.getElement(xmlData, x, y)
+        userActions.push(userAction)
+        xmlData = null
+      }
 
-
-      userActions.push(userAction)
     }
 
     this.getLocation_withTouch = function() {
@@ -271,11 +310,16 @@ module.exports = function ControlServiceFactory(
       return sendTwoWay('screen.capture')
     }
 
-    this.dumpWindowsHierarchy = function(command) {
-      return sendTwoWay('shell.command', {
-        command: 'uiautomator dump'
-        , timeout: 10000
-      })
+    // this.dumpWindowsHierarchy = function(command) {
+    //   return sendTwoWay('shell.command', {
+    //     command: 'uiautomator dump'
+    //     , timeout: 10000
+    //   })
+    // }
+
+    this.dumpWindowsHierarchy = function() {
+      // return sendTwoWay('uiautomator dump;cat /sdcard/window_dump.xml')
+      return sendTwoWay('cat /sdcard/window_dump.xml')
     }
 
     this.fsretrieve = function(file) {

@@ -648,6 +648,7 @@ module.exports = function DeviceScreenDirective(
           _gesture = "touch";
           _scaledX = Math.round(deviceDisplayWidth * scaled.xP)
           _scaledY = Math.round(deviceDisplayHeight * scaled.yP)
+          control.xmlDump(_scaledX, _scaledY);
 
         }
 
